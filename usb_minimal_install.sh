@@ -316,6 +316,16 @@ yes() {
 	sudo chroot $jail apt-add-repository -ys ppa:system76-dev/stable
 	sudo chroot $jail apt update --fix-missing
 	sudo chroot $jail apt -y install grub-theme-pop plymouth-theme-pop-basic pop-gnome-shell-theme pop-icon-theme pop-theme system76-wallpapers
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface gtk-theme "Pop"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface icon-theme "Pop"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface cursor-theme "Pop"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.wm.preferences theme "Pop"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.wm.preferences titlebar-font "Ubuntu 11"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface document-font-name "Ubuntu 11"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface font-name "Ubuntu 11"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface monospace-font-name "Ubuntu Mono 12"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.nautilus.desktop font "Ubuntu 11"'
+	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/System76-Fractal_Mountains-by_Kate_Hazen_of_System76.png"'
 	sleep 3
 }
 
@@ -590,7 +600,9 @@ sudo apt -y dist-upgrade --download-only
 sudo apt -y dist-upgrade
 sudo apt -y autoremove
 sudo apt -y clean
-sudo sudo snap refresh
+sudo snap set system refresh.retain=2
+sudo snap refresh
+sudo snap list --all | while read snapname ver rev trk pub notes; do if [[ $notes = *disabled* ]]; then sudo snap remove "$snapname" --revision="$rev"; fi; done
 exit' > $jail/usr/local/sbin/updateme
 
 #ISOLATE APPS
