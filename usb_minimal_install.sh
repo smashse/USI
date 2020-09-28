@@ -352,6 +352,7 @@ yes() {
 	sudo echo "deb http://dl.google.com/linux/chrome/deb stable main" > "$jail/etc/apt/sources.list.d/google-chrome.list"
 	sudo chmod 644 $jail/etc/apt/sources.list.d/google-chrome.list
 	sudo chroot $jail apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 4CCA1EAF950CEE4AB83976DCA040830F7FAC5991
+	sudo chroot $jail apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EB4C1BFD4F042F6DDDCCEC917721F63BD38B4796
 	sudo chroot $jail apt-get update --fix-missing
 	sudo chroot $jail apt -y install google-chrome-stable --force-yes
 	sleep 3
