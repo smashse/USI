@@ -471,7 +471,7 @@ clear
 #POSTINST
 clear
 echo "Adding the POSTINST SCRIPT..."
-echo "Open a terminal after booting with the chosen device on a device and run "postinst", this script will help you install an IDE for editing code and tools for working with KUBERNETES."
+echo "Open a terminal after booting with the chosen device on a computer and run "postinst", this script will help you install an IDE for editing code and tools for working with KUBERNETES."
 sudo touch $jail/usr/local/sbin/postinst
 sudo chmod 777 $jail/usr/local/sbin/postinst
 sudo echo '#!/bin/bash
