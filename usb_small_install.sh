@@ -45,7 +45,7 @@ yes() {
 	sleep 3; sudo umount -l $jail
 	sleep 3; sudo rm -rf $jail
 	sleep 3; sudo wipefs -a -f /dev/$device
-	sleep 3; sudo partprobe -s
+	sleep 3; sudo partprobe -s /dev/$device
 	sleep 3; sudo parted -s /dev/$device mklabel msdos
 	sleep 3; sudo parted -s /dev/$device print free
 	sleep 3; sudo parted -a optimal -s /dev/$device mkpart primary ext4 0% 512MB
@@ -53,7 +53,8 @@ yes() {
 	sleep 3; sudo parted -s /dev/$device print free
 	sleep 3; sudo mkfs.vfat -n UEFI /dev/$device"1"
 	sleep 3; sudo mkfs.xfs -f -L MOBILE /dev/$device"2"
-	sleep 3; sudo partprobe -s
+	sleep 3; sudo partprobe -s /dev/$device
+	sleep 3; sudo lsblk -I 8 -d
 	sleep 3
 }
 
