@@ -7,4 +7,6 @@ This script was created by someone who was tired of reinstalling Ubuntu using th
 
 *I don't usually use a conventional installation of Ubuntu, I believe it will do much more than I need so I installed it on my nail using Ubuntu Base which is a minimal package, only that I often had to open an old TXT and run the same steps, this week I upgraded the SSD's on my workstations and notebook, stopped and thought it was a good time to take the laziness out and automate the bulk of this process so this "pain" was born this script that is very [KISS](https://en.wikipedia.org/wiki/KISS_principle "Keep It Simple, Stupid"), I tried make it as simple as possible only in Shell Script and without a lot of flourishes :-)*
 
+*Update: I added the local folder in the repository the version to run on machines with Ubuntu already installed, if you select to use support for SYSTEM76, it will modify the fonts and the wallpaper ;-)*
+
 ***Anderson Gama***
