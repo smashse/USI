@@ -32,7 +32,7 @@ sudo apt update --fix-missing
 sleep 3
 
 clear
-sudo chroot apt -y dist-upgrade
+sudo apt -y dist-upgrade
 sleep 3
 
 #INSTALL BASE SYSTEM
