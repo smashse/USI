@@ -370,8 +370,13 @@ atom() {
 	clear
 	echo "#ATOM"
 	sudo snap install atom --classic
+	apm install linter-ansible-linting
+	apm install linter-ansible-syntax
+	apm install linter-terraform-syntax
+	apm install linter-kubectl
 	apm install language-ansible
 	apm install language-terraform
+	apm install language-docker
 	apm install atom-beautify
 	sleep 3
 }
