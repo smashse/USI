@@ -9,6 +9,7 @@ cd /tmp
 clear
 echo "Creating sources file with default Ubuntu repositories..."
 sleep 3
+sudo rm -rf /etc/apt/sources.list.d/*
 sudo chmod 666 /etc/apt/sources.list
 
 echo "#ubuntu
@@ -141,7 +142,6 @@ kde() {
 	sudo touch /etc/apt/sources.list.d/kde-neon.list
 	sudo chmod 666 /etc/apt/sources.list.d/kde-neon.list
 	sudo curl -fsSL 'http://archive.neon.kde.org/public.key' | sudo apt-key add -
-	sudo rm -rf /etc/apt/sources.list.d/neon.list
 	sudo echo "deb http://archive.neon.kde.org/user $(lsb_release -cs) main" > "/etc/apt/sources.list.d/kde-neon.list"
 	sudo echo "deb http://archive.neon.kde.org/user/lts $(lsb_release -cs) main" >> "/etc/apt/sources.list.d/kde-neon.list"
 	sudo chmod 644 /etc/apt/sources.list.d/kde-neon.list
