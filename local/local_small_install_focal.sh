@@ -421,15 +421,15 @@ k8s() {
 }
 
 yes() {
-	clear
-	echo "#KUBECTL"
-	sudo snap install kubectl --classic
+    clear
+    echo "#KUBECTL"
+    sudo snap install kubectl --classic
     echo "HELM"
     sudo snap install helm --classic
     echo "LENS"
     sudo snap install kontena-lens --classic
-	echo "KUBENAV"
-	cd /tmp
+    echo "KUBENAV"
+    cd /tmp
     wget -c https://github.com/kubenav/kubenav/releases/latest/download/kubenav-linux-amd64.zip
     unzip kubenav-linux-amd64.zip
     chmod a+x kubenav
