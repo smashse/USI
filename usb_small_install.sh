@@ -549,6 +549,12 @@ yes() {
     sudo snap install helm --classic
     echo "LENS"
     sudo snap install kontena-lens --classic
+	echo "KUBENAV"
+	cd /tmp
+    wget -c https://github.com/kubenav/kubenav/releases/latest/download/kubenav-linux-amd64.zip
+    unzip kubenav-linux-amd64.zip
+    chmod a+x kubenav
+    sudo mv kubenav /usr/local/sbin/
     echo "K9S+POPEYE"
     cd /tmp
     for i in `curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep 'browser_' | cut -d\" -f4 | grep "Linux_x86_64"` ; do wget -c $i -O "k9s.tar.gz" ; done
