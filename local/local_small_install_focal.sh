@@ -20,7 +20,7 @@ deb http://archive.ubuntu.com/ubuntu focal-proposed restricted main universe mul
 #security
 deb http://security.ubuntu.com/ubuntu focal-security main restricted universe multiverse
 #partner
-deb http://archive.canonical.com/ubuntu focal partner" > /etc/apt/sources.list
+deb http://archive.canonical.com/ubuntu focal partner" >/etc/apt/sources.list
 
 sudo chmod 644 /etc/apt/sources.list
 sleep 3
@@ -53,7 +53,7 @@ echo "
 GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"
 
 # Uncomment to disable OS PROBE
-GRUB_DISABLE_OS_PROBER=true" >> /etc/default/grub
+GRUB_DISABLE_OS_PROBER=true" >>/etc/default/grub
 
 sudo chmod 644 /etc/default/grub
 sleep 3
@@ -72,14 +72,14 @@ echo "Enabling automatic disk integrity checking..."
 sleep 3
 sudo touch /etc/default/rcS
 sudo chmod 666 /etc/default/rcS
-echo "FSCKFIX=yes" > /etc/default/rcS
+echo "FSCKFIX=yes" >/etc/default/rcS
 sudo chmod 644 /etc/default/rcS
 sleep 3
 
 clear
 sudo touch /boot/cmdline.txt
 sudo chmod 666 /boot/cmdline.txt
-echo "fsck.repair=yes" > /boot/cmdline.txt
+echo "fsck.repair=yes" >/boot/cmdline.txt
 sudo chmod 644 /boot/cmdline.txt
 sleep 3
 
@@ -120,10 +120,16 @@ gui() {
 	read gui
 
 	case $gui in
-		gnome) gnome ;;
-		kde) kde ;;
-		xfce) xfce ;;
-		*) clear ; echo "Type [gnome], [kde] or [xfce]!" ; sleep 3 ; clear ; gui ;;
+	gnome) gnome ;;
+	kde) kde ;;
+	xfce) xfce ;;
+	*)
+		clear
+		echo "Type [gnome], [kde] or [xfce]!"
+		sleep 3
+		clear
+		gui
+		;;
 	esac
 
 }
@@ -142,8 +148,8 @@ kde() {
 	sudo touch /etc/apt/sources.list.d/kde-neon.list
 	sudo chmod 666 /etc/apt/sources.list.d/kde-neon.list
 	sudo curl -fsSL 'http://archive.neon.kde.org/public.key' | sudo apt-key add -
-	sudo echo "deb http://archive.neon.kde.org/user $(lsb_release -cs) main" > "/etc/apt/sources.list.d/kde-neon.list"
-	sudo echo "deb http://archive.neon.kde.org/user/lts $(lsb_release -cs) main" >> "/etc/apt/sources.list.d/kde-neon.list"
+	sudo echo "deb http://archive.neon.kde.org/user $(lsb_release -cs) main" >"/etc/apt/sources.list.d/kde-neon.list"
+	sudo echo "deb http://archive.neon.kde.org/user/lts $(lsb_release -cs) main" >>"/etc/apt/sources.list.d/kde-neon.list"
 	sudo chmod 644 /etc/apt/sources.list.d/kde-neon.list
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 444DABCF3667D0283F894EDDE6D4736255751E5D
 	sudo apt update --fix-missing
@@ -171,9 +177,15 @@ system76() {
 	read system76
 
 	case $system76 in
-		yes) yes ;;
-		no) no ;;
-		*) clear ; echo "Type [yes] if you want to add the repository or [no] to end the process!" ; sleep 3 ; clear ; system76 ;;
+	yes) yes ;;
+	no) no ;;
+	*)
+		clear
+		echo "Type [yes] if you want to add the repository or [no] to end the process!"
+		sleep 3
+		clear
+		system76
+		;;
 	esac
 
 }
@@ -186,16 +198,26 @@ yes() {
 	sudo apt-add-repository -ys ppa:system76-dev/stable
 	sudo apt update --fix-missing
 	sudo apt -y install grub-theme-pop plymouth-theme-pop-basic pop-gnome-shell-theme pop-icon-theme pop-theme system76-wallpapers
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface gtk-theme "Pop"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface icon-theme "Pop"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface cursor-theme "Pop"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.wm.preferences theme "Pop"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.wm.preferences titlebar-font "Ubuntu 11"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface document-font-name "Ubuntu 11"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface font-name "Ubuntu 11"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface monospace-font-name "Ubuntu Mono 12"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.nautilus.desktop font "Ubuntu 11"'
-	sleep 3; sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/System76-Fractal_Mountains-by_Kate_Hazen_of_System76.png"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface gtk-theme "Pop"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface icon-theme "Pop"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface cursor-theme "Pop"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.wm.preferences theme "Pop"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.wm.preferences titlebar-font "Ubuntu 11"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface document-font-name "Ubuntu 11"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface font-name "Ubuntu 11"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.interface monospace-font-name "Ubuntu Mono 12"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.nautilus.desktop font "Ubuntu 11"'
+	sleep 3
+	sudo runuser -l $USER -c 'gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/System76-Fractal_Mountains-by_Kate_Hazen_of_System76.png"'
 	sleep 3
 }
 
@@ -216,9 +238,15 @@ chrome() {
 	read chrome
 
 	case $chrome in
-		yes) yes ;;
-		no) no ;;
-		*) clear ; echo "Type [yes] if you want to add the repository or [no] to end this process!" ; sleep 3 ; clear ; chrome ;;
+	yes) yes ;;
+	no) no ;;
+	*)
+		clear
+		echo "Type [yes] if you want to add the repository or [no] to end this process!"
+		sleep 3
+		clear
+		chrome
+		;;
 	esac
 
 }
@@ -229,7 +257,7 @@ yes() {
 	sudo touch /etc/apt/sources.list.d/google-chrome.list
 	sudo chmod 666 /etc/apt/sources.list.d/google-chrome.list
 	sudo curl -fsSL 'https://dl-ssl.google.com/linux/linux_signing_key.pub' | sudo apt-key add -
-	sudo echo "deb http://dl.google.com/linux/chrome/deb stable main" > "/etc/apt/sources.list.d/google-chrome.list"
+	sudo echo "deb http://dl.google.com/linux/chrome/deb stable main" >"/etc/apt/sources.list.d/google-chrome.list"
 	sudo chmod 644 /etc/apt/sources.list.d/google-chrome.list
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 4CCA1EAF950CEE4AB83976DCA040830F7FAC5991
 	sudo apt-get update --fix-missing
@@ -255,11 +283,17 @@ cloud() {
 	read cloud
 
 	case $cloud in
-		aws) aws ;;
-		azure) azure ;;
-		gcp) gcp ;;
-		no) no ;;
-		*) clear ; echo "Type [aws], [azure], [gcp] or [no] to end this process!" ; sleep 3 ; clear ; cloud ;;
+	aws) aws ;;
+	azure) azure ;;
+	gcp) gcp ;;
+	no) no ;;
+	*)
+		clear
+		echo "Type [aws], [azure], [gcp] or [no] to end this process!"
+		sleep 3
+		clear
+		cloud
+		;;
 	esac
 
 }
@@ -279,7 +313,7 @@ azure() {
 	sudo touch /etc/apt/sources.list.d/azure-cli.list
 	sudo chmod 666 /etc/apt/sources.list.d/azure-cli.list
 	sudo curl -fsSL 'https://packages.microsoft.com/keys/microsoft.asc' | sudo apt-key add -
-	sudo echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > "/etc/apt/sources.list.d/azure-cli.list"
+	sudo echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" >"/etc/apt/sources.list.d/azure-cli.list"
 	sudo chmod 644 /etc/apt/sources.list.d/azure-cli.list
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF
 	sudo apt update --fix-missing
@@ -293,7 +327,7 @@ gcp() {
 	sudo touch /etc/apt/sources.list.d/google-cloud-sdk.list
 	sudo chmod 666 /etc/apt/sources.list.d/google-cloud-sdk.list
 	sudo curl -fsSL 'https://packages.cloud.google.com/apt/doc/apt-key.gpg' | sudo apt-key add -
-	sudo echo "deb [arch=amd64] http://packages.cloud.google.com/apt cloud-sdk main" > "/etc/apt/sources.list.d/google-cloud-sdk.list"
+	sudo echo "deb [arch=amd64] http://packages.cloud.google.com/apt cloud-sdk main" >"/etc/apt/sources.list.d/google-cloud-sdk.list"
 	sudo chmod 644 /etc/apt/sources.list.d/google-cloud-sdk.list
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 54A647F9048D5688D7DA2ABE6A030B21BA07F4FB
 	sudo apt update --fix-missing
@@ -318,9 +352,15 @@ hashicorp() {
 	read hashicorp
 
 	case $hashicorp in
-		yes) yes ;;
-		no) no ;;
-		*) clear ; echo "Type [yes] if you want to add the repository or [no] to end the process!" ; sleep 3 ; clear ; hashicorp ;;
+	yes) yes ;;
+	no) no ;;
+	*)
+		clear
+		echo "Type [yes] if you want to add the repository or [no] to end the process!"
+		sleep 3
+		clear
+		hashicorp
+		;;
 	esac
 
 }
@@ -331,7 +371,7 @@ yes() {
 	sudo touch /etc/apt/sources.list.d/hashicorp.list
 	sudo chmod 666 /etc/apt/sources.list.d/hashicorp.list
 	sudo curl -fsSL 'https://apt.releases.hashicorp.com/gpg' | sudo apt-key add -
-	sudo echo "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" > "/etc/apt/sources.list.d/hashicorp.list"
+	sudo echo "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" >"/etc/apt/sources.list.d/hashicorp.list"
 	sudo chmod 666 /etc/apt/sources.list.d/hashicorp.list
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E8A032E094D8EB4EA189D270DA418C88A3219F7B
 	sudo apt update --fix-missing
@@ -357,11 +397,17 @@ ide() {
 	read ide
 
 	case $ide in
-		atom) atom ;;
-		intellij) intellij ;;
-		vscode) vscode ;;
-		no) no ;;
-		*) clear ; echo "Type [atom], [intellij], [vscode] or [no] to end this process!" ; sleep 3 ; clear ; ide ;;
+	atom) atom ;;
+	intellij) intellij ;;
+	vscode) vscode ;;
+	no) no ;;
+	*)
+		clear
+		echo "Type [atom], [intellij], [vscode] or [no] to end this process!"
+		sleep 3
+		clear
+		ide
+		;;
 	esac
 
 }
@@ -408,43 +454,49 @@ clear
 k8s() {
 	echo "Do you want to install tools to work with KUBERNETES??"
 	sleep 3
-  echo "Type yes or no!"
+	echo "Type yes or no!"
 	echo -n "What option is desired? "
 	read k8s
 
 	case $k8s in
-		yes) yes ;;
-		no) no ;;
-		*) clear ; echo "Type [yes] if you want to install support to KUBECTL, HELM, LENS, K9S and POPEYE or [no] to end the process!" ; sleep 3 ; clear ; k8s ;;
+	yes) yes ;;
+	no) no ;;
+	*)
+		clear
+		echo "Type [yes] if you want to install support to KUBECTL, HELM, LENS, K9S and POPEYE or [no] to end the process!"
+		sleep 3
+		clear
+		k8s
+		;;
 	esac
 
 }
 
 yes() {
-    clear
-    echo "#KUBECTL"
-    sudo snap install kubectl --classic
-    echo "HELM"
-    sudo snap install helm --classic
-    echo "LENS"
-    sudo snap install kontena-lens --classic
-    echo "KUBENAV"
-    cd /tmp
-    wget -c https://github.com/kubenav/kubenav/releases/latest/download/kubenav-linux-amd64.zip
-    unzip kubenav-linux-amd64.zip
-    chmod a+x kubenav
-    sudo mv kubenav /usr/local/sbin/
-    echo "K9S+POPEYE"
-    cd /tmp
-    for i in `curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep 'browser_' | cut -d\" -f4 | grep "Linux_x86_64"` ; do wget -c $i -O "k9s.tar.gz" ; done
-    tar -zxvf k9s.tar.gz
-    chmod a+x k9s
-    sudo mv k9s /usr/local/sbin/
-    for i in `curl -s https://api.github.com/repos/derailed/popeye/releases/latest | grep 'browser_' | cut -d\" -f4 | grep "Linux_x86_64"` ; do wget -c $i -O "popeye.tar.gz" ; done
-    tar -zxvf popeye.tar.gz
-    chmod a+x popeye
-    sudo mv popeye /usr/local/sbin/
-    sleep 3
+	clear
+	echo "#KUBECTL"
+	sudo snap install kubectl --classic
+	echo "HELM"
+	sudo snap install helm --classic
+	echo "LENS"
+	sudo snap install kontena-lens --classic
+	echo "KUBENAV"
+	cd /tmp
+	wget -c https://github.com/kubenav/kubenav/releases/latest/download/kubenav-linux-amd64.zip
+	unzip kubenav-linux-amd64.zip
+	chmod a+x kubenav
+	sudo mv kubenav /usr/local/sbin/
+	echo "K9S+POPEYE"
+	cd /tmp
+	for i in $(curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep 'browser_' | cut -d\" -f4 | grep "Linux_x86_64"); do wget -c $i -O "k9s.tar.gz"; done
+	tar -zxvf k9s.tar.gz
+	chmod a+x k9s
+	sudo mv k9s /usr/local/sbin/
+	for i in $(curl -s https://api.github.com/repos/derailed/popeye/releases/latest | grep 'browser_' | cut -d\" -f4 | grep "Linux_x86_64"); do wget -c $i -O "popeye.tar.gz"; done
+	tar -zxvf popeye.tar.gz
+	chmod a+x popeye
+	sudo mv popeye /usr/local/sbin/
+	sleep 3
 }
 
 no() {
@@ -464,7 +516,7 @@ if [ -f `which powerline-daemon` ]; then
   POWERLINE_BASH_CONTINUATION=1
   POWERLINE_BASH_SELECT=1
   . /usr/share/powerline/bindings/bash/powerline.sh
-fi' >> /etc/bash.bashrc
+fi' >>/etc/bash.bashrc
 sudo chmod 644 /etc/bash.bashrc
 
 #UPDATEME SCRIPT
@@ -479,15 +531,15 @@ sudo apt -y clean
 sudo snap set system refresh.retain=2
 sudo snap refresh
 sudo snap list --all | while read snapname ver rev trk pub notes; do if [[ $notes = *disabled* ]]; then sudo snap remove "$snapname" --revision="$rev"; fi; done
-exit' > /usr/local/sbin/updateme
+exit' >/usr/local/sbin/updateme
 
 #ISOLATE APPS
 sudo chmod 666 /usr/share/applications/*
 cd /usr/share/applications/
-for i in `ls -1 | grep gnome` ; do echo "NotShowIn=XFCE;" >> $i ; done
-for i in `ls -1 | grep gnome` ; do echo "OnlyShowIn=GNOME;" >> $i ; done
-for i in `ls -1 | grep xfce` ; do echo "NotShowIn=GNOME;" >> $i ; done
-for i in `ls -1 | grep xfce` ; do echo "OnlyShowIn=XFCE;" >> $i ; done
+for i in $(ls -1 | grep gnome); do echo "NotShowIn=XFCE;" >>$i; done
+for i in $(ls -1 | grep gnome); do echo "OnlyShowIn=GNOME;" >>$i; done
+for i in $(ls -1 | grep xfce); do echo "NotShowIn=GNOME;" >>$i; done
+for i in $(ls -1 | grep xfce); do echo "OnlyShowIn=XFCE;" >>$i; done
 sudo chmod 644 /usr/share/applications/*
 cd /tmp
 
