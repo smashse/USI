@@ -26,7 +26,7 @@ source /tmp/env.txt
 #DISK PARTITIONING
 wipe() {
     clear
-    echo "This script was created by someone who was tired of reinstalling Ubuntu using the most difficult method (but much more fun and light in the end). It uses Ubuntu Base 20.04.2 LTS (Focal Fossa), feel free to copy it and adapt to your needs! This procedure will erase the the selected device, do you want to proceed?"
+    echo "This script was created by someone who was tired of reinstalling Ubuntu using the most difficult method (but much more fun and light in the end). It uses Ubuntu Base 20.04.3 LTS (Focal Fossa), feel free to copy it and adapt to your needs! This procedure will erase the the selected device, do you want to proceed?"
     sleep 3
     echo "Type yes or no!"
     echo -n "What option is desired? "
@@ -88,9 +88,9 @@ clear
 
 #DOWNLOAD UBUNTU BASE
 clear
-echo "Downloading Ubuntu Base 20.04.2 LTS (Focal Fossa)..."
+echo "Downloading Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
 sleep 3
-wget -c http://cdimage.ubuntu.com/ubuntu-base/releases/focal/release/ubuntu-base-20.04.2-base-amd64.tar.gz
+wget -c http://cdimage.ubuntu.com/ubuntu-base/releases/focal/release/ubuntu-base-20.04.3-base-amd64.tar.gz
 sleep 3
 
 #CREATE AND MOUNT MEDIA FOLDER
@@ -103,9 +103,9 @@ sleep 3
 
 #EXTRACT UBUNTU BASE
 clear
-echo "Extracting Ubuntu Base 20.04.2 LTS (Focal Fossa)..."
+echo "Extracting Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
 sleep 3
-sudo tar -zxvf ubuntu-base-20.04.2-base-amd64.tar.gz -C $jail/
+sudo tar -zxvf ubuntu-base-20.04.3-base-amd64.tar.gz -C $jail/
 sleep 3
 
 #COPY RESOLV CONFIG
@@ -141,7 +141,7 @@ sleep 3
 
 #UPDATE AND UPGRADE UBUNTU BASE
 clear
-echo "Upgrading Ubuntu Base 20.04.2 LTS (Focal Fossa)..."
+echo "Upgrading Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
 sleep 3
 sudo chroot $jail apt update --fix-missing
 sleep 3
@@ -152,7 +152,7 @@ sleep 3
 
 #INSTALL BASE SYSTEM
 clear
-echo "Installing base system for Ubuntu Base 20.04.2 LTS (Focal Fossa)..."
+echo "Installing base system for Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
 sudo chroot $jail apt -y install adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 mlocate nano ncdu network-manager net-tools nmap petname powerline resolvconf snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip whois wget xfsprogs xz-utils
 sleep 3
 
