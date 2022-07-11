@@ -26,7 +26,7 @@ source /tmp/env.txt
 #DISK PARTITIONING
 wipe() {
     clear
-    echo "This script was created by someone who was tired of reinstalling Ubuntu using the most difficult method (but much more fun and light in the end). It uses Ubuntu Base 20.04.3 LTS (Focal Fossa), feel free to copy it and adapt to your needs! This procedure will erase the the selected device, do you want to proceed?"
+    echo "This script was created by someone who was tired of reinstalling Ubuntu using the most difficult method (but much more fun and light in the end). It uses Ubuntu Base 20.04.4 LTS (Focal Fossa), feel free to copy it and adapt to your needs! This procedure will erase the the selected device, do you want to proceed?"
     sleep 3
     echo "Type yes or no!"
     echo -n "What option is desired? "
