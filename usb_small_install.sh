@@ -153,6 +153,7 @@ sleep 3
 #INSTALL BASE SYSTEM
 clear
 echo "Installing base system for Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
+sudo chroot $jail apt -y install adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 mlocate nano ncdu network-manager net-tools nmap petname powerline resolvconf snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip whois wget xfsprogs xz-utils --download-only
 sudo chroot $jail apt -y install adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 mlocate nano ncdu network-manager net-tools nmap petname powerline resolvconf snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip whois wget xfsprogs xz-utils
 sleep 3
 
@@ -288,6 +289,7 @@ gnome() {
     clear
     echo "#Install GNOME!"
     sudo chroot $jail apt update --fix-missing
+    sudo chroot $jail apt -y install gnome-shell gnome-shell-extensions chrome-gnome-shell gedit gnome-screensaver gnome-terminal gnome-tweak-tool gnome-tweaks language-selector-gnome language-pack-gnome-pt light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings nautilus software-properties-common tilix yaru-theme-gnome-shell vlc --download-only
     sudo chroot $jail apt -y install gnome-shell gnome-shell-extensions chrome-gnome-shell gedit gnome-screensaver gnome-terminal gnome-tweak-tool gnome-tweaks language-selector-gnome language-pack-gnome-pt light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings nautilus software-properties-common tilix yaru-theme-gnome-shell vlc
     sleep 3
 }
@@ -303,6 +305,7 @@ kde() {
     sudo chmod 644 $jail/etc/apt/sources.list.d/kde-neon.list
     sudo chroot $jail apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 444DABCF3667D0283F894EDDE6D4736255751E5D
     sudo chroot $jail apt update --fix-missing
+    sudo chroot $jail apt -y install neon-desktop elisa vlc --download-only
     sudo chroot $jail apt -y install neon-desktop elisa vlc
     sleep 3
 }
@@ -311,6 +314,7 @@ xfce() {
     clear
     echo "#Install XFCE!"
     sudo chroot $jail apt update --fix-missing
+    sudo chroot $jail apt -y install xfce4 light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4-terminal language-selector-gnome language-pack-gnome-pt gnome-tweak-tool gnome-tweaks software-properties-common policykit-1-gnome policykit-desktop-privileges tilix vlc --download-only
     sudo chroot $jail apt -y install xfce4 light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4-terminal language-selector-gnome language-pack-gnome-pt gnome-tweak-tool gnome-tweaks software-properties-common policykit-1-gnome policykit-desktop-privileges tilix vlc
     sleep 3
 }
