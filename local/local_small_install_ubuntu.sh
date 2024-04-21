@@ -6,22 +6,24 @@
 cd /tmp
 
 #CREATE NEW SOURCES LIST
-clear ; echo "Creating sources file with default Ubuntu repositories..."
+clear
+echo "Creating sources file with default Ubuntu repositories..."
 sleep 3
 
 echo "#ubuntu
-deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu `lsb_release -sc`-updates main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu `lsb_release -sc`-backports main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu `lsb_release -sc`-proposed restricted main universe multiverse
+deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-updates main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-backports main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-proposed restricted main universe multiverse
 #security
-deb http://security.ubuntu.com/ubuntu `lsb_release -sc`-security main restricted universe multiverse
+deb http://security.ubuntu.com/ubuntu $(lsb_release -sc)-security main restricted universe multiverse
 #partner
-deb http://archive.canonical.com/ubuntu `lsb_release -sc` partner" | sudo tee /etc/apt/sources.list
+deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner" | sudo tee /etc/apt/sources.list
 sleep 3
 
 #UPDATE AND UPGRADE UBUNTU BASE
-clear ; echo "Upgrading Ubuntu Base `lsb_release -sr`..."
+clear
+echo "Upgrading Ubuntu Base $(lsb_release -sr)..."
 sleep 3
 sudo apt update --fix-missing
 sleep 3
@@ -31,12 +33,13 @@ sudo apt -y dist-upgrade
 sleep 3
 
 #INSTALL BASE SYSTEM
-echo "Installing base system for Ubuntu Base `lsb_release -sr`..."
+echo "Installing base system for Ubuntu Base $(lsb_release -sr)..."
 sudo apt -y install adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 mlocate nano ncdu network-manager net-tools nmap petname powerline resolvconf snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip wipe whois wget xfsprogs xz-utils
 sleep 3
 
 #CUSTOM GRUB
-clear ; echo "Customizing grub for this installation method..."
+clear
+echo "Customizing grub for this installation method..."
 sleep 3
 
 echo "
@@ -48,28 +51,32 @@ GRUB_DISABLE_OS_PROBER=true" | sudo tee -a /etc/default/grub
 sleep 3
 
 #UPDATE GRUB
-clear ; echo "Updating grub..."
+clear
+echo "Updating grub..."
 sleep 3
 sudo update-grub2
 sudo update-initramfs -u
 sleep 3
 
 #ENABLE AUTO FSCK
-clear ; echo "Enabling automatic disk integrity checking..."
+clear
+echo "Enabling automatic disk integrity checking..."
 sleep 3
 echo "FSCKFIX=yes" | sudo tee /etc/default/rcS
 echo "fsck.repair=yes" | sudo tee /boot/cmdline.txt
 sleep 3
 
 #ENABLE NETWORK MANAGER
-clear ; echo "Enabling network administration..."
+clear
+echo "Enabling network administration..."
 sleep 3
 sudo sed -i "s/=false/=true/g" /etc/NetworkManager/NetworkManager.conf
 sudo touch /etc/NetworkManager/conf.d/10-globally-managed-devices.conf
 sleep 3
 
 #CONFIG LOCALE
-clear ; echo "Setting the locale..."
+clear
+echo "Setting the locale..."
 sleep 3
 echo "Choose your location. For example, if you live in Brazil, it will be [pt_BR], Portugal [pt_PT], in the USA [en_US]."
 echo -n "Enter your location! "
@@ -106,14 +113,16 @@ gui() {
 }
 
 gnome() {
-	clear ; echo "#Install GNOME!"
+	clear
+	echo "#Install GNOME!"
 	sudo apt update --fix-missing
 	sudo apt -y install gnome-shell gnome-shell-extensions chrome-gnome-shell gedit gnome-screensaver gnome-terminal gnome-tweaks language-selector-gnome language-pack-gnome-pt light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings nautilus software-properties-common tilix yaru-theme-gnome-shell vlc
 	sleep 3
 }
 
 kde() {
-	clear ; echo "#Install KDE!"
+	clear
+	echo "#Install KDE!"
 	sudo curl -fsSL 'http://archive.neon.kde.org/public.key' | sudo apt-key add -
 	sudo echo "deb http://archive.neon.kde.org/user $(lsb_release -cs) main" | sudo tee "/etc/apt/sources.list.d/kde-neon.list"
 	sudo echo "deb http://archive.neon.kde.org/user/lts $(lsb_release -cs) main" | sudo tee -a "/etc/apt/sources.list.d/kde-neon.list"
@@ -124,9 +133,10 @@ kde() {
 }
 
 xfce() {
-	clear ; echo "#Install XFCE!"
+	clear
+	echo "#Install XFCE!"
 	sudo apt update --fix-missing
-su	sudo apt -y install xfce4 light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4-terminal language-selector-gnome language-pack-gnome-pt gnome-tweaks software-properties-common policykit-1-gnome policykit-desktop-privileges tilix vlc
+	su sudo apt -y install xfce4 light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4-terminal language-selector-gnome language-pack-gnome-pt gnome-tweaks software-properties-common policykit-1-gnome policykit-desktop-privileges tilix vlc
 	sleep 3
 }
 
@@ -156,7 +166,8 @@ system76() {
 }
 
 yes() {
-	clear ; echo "Adding the repository for SYSTEM76..."
+	clear
+	echo "Adding the repository for SYSTEM76..."
 	sleep 3
 	sudo add-apt-repository ppa:system76/pop
 	sudo apt-add-repository -ys ppa:system76-dev/stable
@@ -260,7 +271,8 @@ cloud() {
 }
 
 aws() {
-	clear ; echo "#AWS"
+	clear
+	echo "#AWS"
 	sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/"awscliv2.zip"
 	sudo unzip /tmp/awscliv2.zip -d /tmp/
 	sudo sh /tmp/aws/install
@@ -268,7 +280,8 @@ aws() {
 }
 
 azure() {
-	clear ; echo "#AZURE"
+	clear
+	echo "#AZURE"
 	sudo curl -fsSL 'https://packages.microsoft.com/keys/microsoft.asc' | sudo apt-key add -
 	sudo echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee "/etc/apt/sources.list.d/azure-cli.list"
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF
@@ -278,7 +291,8 @@ azure() {
 }
 
 gcp() {
-	clear ; echo "#GCP"
+	clear
+	echo "#GCP"
 	sudo curl -fsSL 'https://packages.cloud.google.com/apt/doc/apt-key.gpg' | sudo apt-key add -
 	sudo echo "deb [arch=amd64] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee "/etc/apt/sources.list.d/google-cloud-sdk.list"
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 54A647F9048D5688D7DA2ABE6A030B21BA07F4FB
@@ -318,7 +332,8 @@ hashicorp() {
 }
 
 yes() {
-	clear ; echo "Adding the repository for HASHICORP..."
+	clear
+	echo "Adding the repository for HASHICORP..."
 	sudo curl -fsSL 'https://apt.releases.hashicorp.com/gpg' | sudo apt-key add -
 	sudo echo "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee "/etc/apt/sources.list.d/hashicorp.list"
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E8A032E094D8EB4EA189D270DA418C88A3219F7B
@@ -350,7 +365,8 @@ ide() {
 	vscodium) vscodium ;;
 	no) no ;;
 	*)
-		clear ; echo "Type [intellij], [vscode], [vscodium] or [no] to end this process!"
+		clear
+		echo "Type [intellij], [vscode], [vscodium] or [no] to end this process!"
 		sleep 3
 		clear
 		ide
@@ -360,19 +376,22 @@ ide() {
 }
 
 intellij() {
-	clear ; echo "#INTELLIJ"
+	clear
+	echo "#INTELLIJ"
 	sudo snap install intellij-idea-community --classic
 	sleep 3
 }
 
 vscode() {
-	clear ;	echo "#VSCODE"
+	clear
+	echo "#VSCODE"
 	sudo snap install code --classic
 	sleep 3
 }
 
 vscodium() {
-	clear ;	echo "#VSCODIUM"
+	clear
+	echo "#VSCODIUM"
 	sudo snap install codium --classic
 	sleep 3
 }
@@ -444,7 +463,8 @@ k8s
 clear
 
 #ENABLE POWERLINE
-clear ; echo "Enable POWERLINE..."
+clear
+echo "Enable POWERLINE..."
 sudo echo '
 #powerline
 if [ -f `which powerline-daemon` ]; then
@@ -455,7 +475,8 @@ if [ -f `which powerline-daemon` ]; then
 fi' | sudo tee -a /etc/bash.bashrc
 
 #UPDATEME SCRIPT
-clear ; echo "Create UPDATEME..."
+clear
+echo "Create UPDATEME..."
 sudo echo '#!/bin/bash
 sudo apt update --fix-missing
 sudo apt -y dist-upgrade --download-only
