@@ -26,7 +26,7 @@ source /tmp/env.txt
 #DISK PARTITIONING
 wipe() {
     clear
-    echo "This script was created by someone who was tired of reinstalling Ubuntu using the most difficult method (but much more fun and light in the end). It uses Ubuntu Base 20.04.4 LTS (Focal Fossa), feel free to copy it and adapt to your needs! This procedure will erase the the selected device, do you want to proceed?"
+    echo "This script was created by someone who was tired of reinstalling Ubuntu using the most difficult method (but much more fun and light in the end). It uses Ubuntu Base 20.04.4 LTS (Noble Numbat), feel free to copy it and adapt to your needs! This procedure will erase the the selected device, do you want to proceed?"
     sleep 3
     echo "Type yes or no!"
     echo -n "What option is desired? "
@@ -86,11 +86,68 @@ no() {
 wipe
 clear
 
+#CHOSE RELEASE
+clear
+release() {
+    echo "Chose your release: focal, jammy or noble?"
+    sleep 3
+    echo "Type focal, jammy or noble"
+    echo -n "What option is desired? "
+    read release
+
+    case $release in
+    focal) focal ;;
+    jammy) jammy ;;
+    noble) noble ;;
+    *)
+        clear
+        echo "Type [focal], [jammy] or [noble]!"
+        sleep 3
+        clear
+        release
+        ;;
+    esac
+
+}
+
+focal() {
+    clear
+    echo "#Install Focal Fossa!"
+    export codename_release="Focal Fossa"
+    export version_release="20.04.5"
+    export lsb_release="focal"
+    export cdimage_release="http://cdimage.ubuntu.com/ubuntu-base/releases/focal/release/ubuntu-base-20.04.5-base-amd64.tar.gz"
+    sleep 3
+}
+
+jammy() {
+    clear
+    echo "#Install Jammy Jellyfish!"
+    export codename_release="Jammy Jellyfish"
+    export version_release="22.04.4"
+    export lsb_release="jammy"
+    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/jammy/release/ubuntu-base-22.04.4-base-amd64.tar.gz"
+    sleep 3
+}
+
+noble() {
+    clear
+    echo "#Install Noble Numbat!"
+    export codename_release="Noble Numbat"
+    export version_release="24.04"
+    export lsb_release="noble"
+    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/noble/release/ubuntu-base-24.04-base-amd64.tar.gz"
+    sleep 3
+}
+
+release
+clear
+
 #DOWNLOAD UBUNTU BASE
 clear
-echo "Downloading Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
+echo "Downloading Ubuntu Base $version_release LTS ($codename_release)..."
 sleep 3
-wget -c http://cdimage.ubuntu.com/ubuntu-base/releases/focal/release/ubuntu-base-20.04.3-base-amd64.tar.gz
+wget -c $cdimage_release
 sleep 3
 
 #CREATE AND MOUNT MEDIA FOLDER
@@ -103,9 +160,9 @@ sleep 3
 
 #EXTRACT UBUNTU BASE
 clear
-echo "Extracting Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
+echo "Extracting Ubuntu Base $version_release LTS ($codename_release)..."
 sleep 3
-sudo tar -zxvf ubuntu-base-20.04.3-base-amd64.tar.gz -C $jail/
+sudo tar -zxvf ubuntu-base-$version_release-base-amd64.tar.gz -C $jail/
 sleep 3
 
 #COPY RESOLV CONFIG
@@ -124,24 +181,23 @@ sleep 3
 clear
 echo "Creating sources file with Ubuntu repositories..."
 sleep 3
+sudo rm -rf $jail/etc/apt/sources.list.d/ubuntu.sources
 sudo chmod 666 $jail/etc/apt/sources.list
 
 echo "#ubuntu
-deb http://archive.ubuntu.com/ubuntu focal main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu focal-updates main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu focal-backports main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu focal-proposed restricted main universe multiverse
+deb http://archive.ubuntu.com/ubuntu $lsb_release main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $lsb_release-updates main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $lsb_release-backports main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu $lsb_release-proposed restricted main universe multiverse
 #security
-deb http://security.ubuntu.com/ubuntu focal-security main restricted universe multiverse
-#partner
-deb http://archive.canonical.com/ubuntu focal partner" >$jail/etc/apt/sources.list
+deb http://security.ubuntu.com/ubuntu $lsb_release-security main restricted universe multiverse" >$jail/etc/apt/sources.list
 
 sudo chmod 644 $jail/etc/apt/sources.list
 sleep 3
 
 #UPDATE AND UPGRADE UBUNTU BASE
 clear
-echo "Upgrading Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
+echo "Upgrading Ubuntu Base $version_release LTS ($codename_release)..."
 sleep 3
 sudo chroot $jail apt update --fix-missing
 sleep 3
@@ -152,9 +208,10 @@ sleep 3
 
 #INSTALL BASE SYSTEM
 clear
-echo "Installing base system for Ubuntu Base 20.04.3 LTS (Focal Fossa)..."
-sudo chroot $jail apt -y install adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 mlocate nano ncdu network-manager net-tools nmap petname powerline resolvconf snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip whois wget xfsprogs xz-utils --download-only
-sudo chroot $jail apt -y install adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 mlocate nano ncdu network-manager net-tools nmap petname powerline resolvconf snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip whois wget xfsprogs xz-utils
+echo "Installing base system for Ubuntu Base $version_release LTS ($codename_release)..."
+export base_list="adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 nano ncdu network-manager net-tools nmap petname powerline snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip whois wget xfsprogs xz-utils"
+sudo chroot $jail apt -y install $base_list --download-only
+sudo chroot $jail apt -y install $base_list
 sleep 3
 
 #CREATE USER
@@ -170,8 +227,8 @@ clear
 echo "Create the user with administrative permissions!"
 sleep 3
 sudo chroot $jail adduser $username
-sudo chroot $jail addgroup $username adm
-sudo chroot $jail addgroup $username sudo
+sudo chroot $jail usermod -a -G adm $username
+sudo chroot $jail usermod -a -G sudo $username
 sleep 3
 
 #CUSTOM GRUB
@@ -289,8 +346,9 @@ gnome() {
     clear
     echo "#Install GNOME!"
     sudo chroot $jail apt update --fix-missing
-    sudo chroot $jail apt -y install gnome-shell gnome-shell-extensions chrome-gnome-shell gedit gnome-screensaver gnome-terminal gnome-tweak-tool gnome-tweaks language-selector-gnome language-pack-gnome-pt light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings nautilus software-properties-common tilix yaru-theme-gnome-shell vlc --download-only
-    sudo chroot $jail apt -y install gnome-shell gnome-shell-extensions chrome-gnome-shell gedit gnome-screensaver gnome-terminal gnome-tweak-tool gnome-tweaks language-selector-gnome language-pack-gnome-pt light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings nautilus software-properties-common tilix yaru-theme-gnome-shell vlc
+    export gnome_list="gnome-session gnome-shell gnome-shell-extensions chrome-gnome-shell gedit gnome-screensaver gnome-terminal gnome-tweaks language-selector-gnome language-pack-gnome-pt light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings nautilus software-properties-common tilix yaru-theme-gnome-shell vlc"
+    sudo chroot $jail apt -y install $gnome_list --download-only
+    sudo chroot $jail apt -y install $gnome_list
     sleep 3
 }
 
@@ -301,12 +359,12 @@ kde() {
     sudo chmod 666 $jail/etc/apt/sources.list.d/kde-neon.list
     sudo chroot $jail curl -fsSL 'http://archive.neon.kde.org/public.key' | sudo apt-key add -
     sudo echo "deb http://archive.neon.kde.org/user $(lsb_release -cs) main" >"$jail/etc/apt/sources.list.d/kde-neon.list"
-    sudo echo "deb http://archive.neon.kde.org/user/lts $(lsb_release -cs) main" >>"$jail/etc/apt/sources.list.d/kde-neon.list"
     sudo chmod 644 $jail/etc/apt/sources.list.d/kde-neon.list
     sudo chroot $jail apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 444DABCF3667D0283F894EDDE6D4736255751E5D
     sudo chroot $jail apt update --fix-missing
-    sudo chroot $jail apt -y install neon-desktop elisa vlc --download-only
-    sudo chroot $jail apt -y install neon-desktop elisa vlc
+    export neon_list="neon-desktop elisa vlc"
+    sudo chroot $jail apt -y install $neon_list --download-only
+    sudo chroot $jail apt -y install $neon_list
     sleep 3
 }
 
@@ -314,53 +372,13 @@ xfce() {
     clear
     echo "#Install XFCE!"
     sudo chroot $jail apt update --fix-missing
-    sudo chroot $jail apt -y install xfce4 light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4-terminal language-selector-gnome language-pack-gnome-pt gnome-tweak-tool gnome-tweaks software-properties-common policykit-1-gnome policykit-desktop-privileges tilix vlc --download-only
-    sudo chroot $jail apt -y install xfce4 light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4-terminal language-selector-gnome language-pack-gnome-pt gnome-tweak-tool gnome-tweaks software-properties-common policykit-1-gnome policykit-desktop-privileges tilix vlc
+    export xfce_list="xfce4 light-locker light-locker-settings lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4-terminal language-selector-gnome language-pack-gnome-pt gnome-tweaks software-properties-common policykit-1-gnome policykit-desktop-privileges tilix vlc"
+    sudo chroot $jail apt -y install $xfce_list --download-only
+    sudo chroot $jail apt -y install $xfce_list
     sleep 3
 }
 
 gui
-clear
-
-#SYSTEM76
-system76() {
-    echo "Do you want to add the SYSTEM76 repository?"
-    sleep 3
-    echo "Type yes or no!"
-    echo -n "What option is desired? "
-    read system76
-
-    case $system76 in
-    yes) yes ;;
-    no) no ;;
-    *)
-        clear
-        echo "Type [yes] if you want to add the repository or [no] to end the process!"
-        sleep 3
-        clear
-        system76
-        ;;
-    esac
-
-}
-
-yes() {
-    clear
-    echo "Adding the repository for SYSTEM76..."
-    sleep 3
-    sudo chroot $jail add-apt-repository ppa:system76/pop
-    sudo chroot $jail apt-add-repository -ys ppa:system76-dev/stable
-    sudo chroot $jail apt update --fix-missing
-    sudo chroot $jail apt -y install grub-theme-pop plymouth-theme-pop-basic pop-gnome-shell-theme pop-icon-theme pop-theme system76-wallpapers
-    sleep 3
-}
-
-no() {
-    echo "Ok, get brave, read the code and try again later!"
-    sleep 3
-}
-
-system76
 clear
 
 #GOOGLE CHROME
@@ -532,9 +550,9 @@ sudo echo '#!/bin/bash
 #CHOSE IDE
 clear
 ide() {
-	echo "Chose your IDE: ATOM, INTELLIJ or VSCODE?"
+	echo "Chose your IDE: ATOM, INTELLIJ, VSCODE or CODIUM?"
 	sleep 3
-	echo "Type atom, intellij, vscode or no"
+	echo "Type atom, intellij, vscode, codium or no"
 	echo -n "What option is desired? "
 	read ide
 
@@ -542,8 +560,9 @@ ide() {
 		atom) atom ;;
 		intellij) intellij ;;
 		vscode) vscode ;;
+		codium) codium ;;
 		no) no ;;
-		*) clear ; echo "Type [atom], [intellij], [vscode] or [no] to end this process!" ; sleep 3 ; clear ; ide ;;
+		*) clear ; echo "Type [atom], [intellij], [vscode], [codium] or [no] to end this process!" ; sleep 3 ; clear ; ide ;;
 	esac
 
 }
@@ -566,6 +585,13 @@ vscode() {
 	clear
 	echo "#VSCODE"
 	sudo snap install code --classic
+	sleep 3
+}
+
+coodium() {
+	clear
+	echo "#CODIUM"
+	sudo snap install codium --classic
 	sleep 3
 }
 
