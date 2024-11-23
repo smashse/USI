@@ -16,9 +16,7 @@ deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-updates main restricted 
 deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-backports main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc)-proposed restricted main universe multiverse
 #security
-deb http://security.ubuntu.com/ubuntu $(lsb_release -sc)-security main restricted universe multiverse
-#partner
-deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner" | sudo tee /etc/apt/sources.list
+deb http://security.ubuntu.com/ubuntu $(lsb_release -sc)-security main restricted universe multiverse" | sudo tee /etc/apt/sources.list
 sleep 3
 
 #UPDATE AND UPGRADE UBUNTU BASE
@@ -34,7 +32,7 @@ sleep 3
 
 #INSTALL BASE SYSTEM
 echo "Installing base system for Ubuntu Base $(lsb_release -sr)..."
-sudo apt -y install adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 mlocate nano ncdu network-manager net-tools nmap petname powerline resolvconf snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip wipe whois wget xfsprogs xz-utils
+sudo apt -y install adb bash-completion btrfs-progs curl dphys-swapfile fdclone grub-efi-amd64 htop ifupdown ipset jq language-pack-pt linux-image-generic lvm2 nano ncdu network-manager net-tools nmap petname powerline snap snapd screenfetch software-properties-common tar thin-provisioning-tools tldr tlp ubuntu-minimal unzip whois wget xfsprogs xz-utils
 sleep 3
 
 #CUSTOM GRUB
@@ -309,31 +307,41 @@ no() {
 cloud
 clear
 
-#HASHICORP
-hashicorp() {
-	echo "Do you want to add the HashiCorp repository?"
+#IAC
+iac() {
+	echo "Do you want to install an IaC tool?"
 	sleep 3
-	echo "Type yes or no!"
+	echo "Type [ansible], [terraform], [opentofu] or [no] to end this process!"
 	echo -n "What option is desired? "
-	read hashicorp
+	read iac
 
-	case $hashicorp in
+	case $iac in
 	yes) yes ;;
 	no) no ;;
 	*)
 		clear
-		echo "Type [yes] if you want to add the repository or [no] to end the process!"
+		echo "Type [ansible], [terraform], [opentofu] or [no] to end this process!"
 		sleep 3
 		clear
-		hashicorp
+		iac
 		;;
 	esac
 
 }
 
-yes() {
+ansible() {
 	clear
-	echo "Adding the repository for HASHICORP..."
+	echo "Ansible"
+	sudo wget -O- 'https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367' | sudo gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
+	sudo echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $(lsb_release -cs) main" | sudo tee "/etc/apt/sources.list.d/ansible.list"
+	sudo apt update --fix-missing
+	sudo apt -y install ansible
+	sleep 3
+}
+
+terraform() {
+	clear
+	echo "Terraform"
 	sudo curl -fsSL 'https://apt.releases.hashicorp.com/gpg' | sudo apt-key add -
 	sudo echo "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee "/etc/apt/sources.list.d/hashicorp.list"
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E8A032E094D8EB4EA189D270DA418C88A3219F7B
@@ -342,12 +350,19 @@ yes() {
 	sleep 3
 }
 
+opentofu() {
+	clear
+	echo "OpenTofu"
+	sudo snap install opentofu --classic
+	sleep 3
+}
+
 no() {
 	echo "Ok, get brave, read the code and try again later!"
 	sleep 3
 }
 
-hashicorp
+iac
 clear
 
 #CHOSE IDE
@@ -433,8 +448,6 @@ yes() {
 	sudo snap install kubectl --classic
 	echo "HELM"
 	sudo snap install helm --classic
-	echo "LENS"
-	sudo snap install kontena-lens --classic
 	echo "KUBENAV"
 	cd /tmp
 	wget -c https://github.com/kubenav/kubenav/releases/latest/download/kubenav-linux-amd64.zip

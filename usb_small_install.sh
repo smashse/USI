@@ -126,7 +126,7 @@ jammy() {
     export codename_release="Jammy Jellyfish"
     export version_release="22.04.4"
     export lsb_release="jammy"
-    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/jammy/release/ubuntu-base-22.04.4-base-amd64.tar.gz"
+    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/jammy/release/ubuntu-base-22.04.5-base-amd64.tar.gz"
     sleep 3
 }
 
@@ -136,7 +136,7 @@ noble() {
     export codename_release="Noble Numbat"
     export version_release="24.04"
     export lsb_release="noble"
-    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/noble/release/ubuntu-base-24.04-base-amd64.tar.gz"
+    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/noble/release/ubuntu-base-24.04.1-base-amd64.tar.gz"
     sleep 3
 }
 
@@ -496,39 +496,61 @@ no() {
 cloud
 clear
 
-#HASHICORP
-hashicorp() {
-    echo "Do you want to add the HashiCorp repository?"
+#IAC
+iac() {
+    echo "Do you want to install an IaC tool?"
     sleep 3
-    echo "Type yes or no!"
+    echo "Type [ansible], [terraform], [opentofu] or [no] to end this process!"
     echo -n "What option is desired? "
-    read hashicorp
+    read iac
 
-    case $hashicorp in
-    yes) yes ;;
+    case $iac in
+    ansible) ansible ;;
+    terraform) terraform ;;
+    opentofu) opentofu ;;
     no) no ;;
     *)
         clear
-        echo "Type [yes] if you want to add the repository or [no] to end the process!"
+        echo "Type [ansible], [terraform], [opentofu] or [no] to end this process!"
         sleep 3
         clear
-        hashicorp
+        iac
         ;;
     esac
 
 }
 
-yes() {
+ansible() {
     clear
-    echo "Adding the repository for HASHICORP..."
+    echo "Ansible"
+    sudo touch $jail/etc/apt/sources.list.d/ansible.list
+    sudo chmod 666 $jail/etc/apt/sources.list.d/ansible.list
+    sudo chroot $jail wget -O- 'https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367' | sudo gpg --dearmour -o $jail/usr/share/keyrings/ansible-archive-keyring.gpg
+    sudo echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $(lsb_release -cs) main" >"$jail/etc/apt/sources.list.d/ansible.list"
+    sudo chmod 644 $jail/etc/apt/sources.list.d/hashicorp.list
+    sudo chroot $jail apt update --fix-missing
+    sudo chroot $jail apt -y install ansible
+    sleep 3
+}
+
+terraform() {
+    clear
+    echo "Terraform"
     sudo touch $jail/etc/apt/sources.list.d/hashicorp.list
     sudo chmod 666 $jail/etc/apt/sources.list.d/hashicorp.list
     sudo chroot $jail curl -fsSL 'https://apt.releases.hashicorp.com/gpg' | sudo apt-key add -
     sudo echo "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" >"$jail/etc/apt/sources.list.d/hashicorp.list"
-    sudo chmod 666 $jail/etc/apt/sources.list.d/hashicorp.list
+    sudo chmod 644 $jail/etc/apt/sources.list.d/hashicorp.list
     sudo chroot $jail apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E8A032E094D8EB4EA189D270DA418C88A3219F7B
     sudo chroot $jail apt update --fix-missing
     sudo chroot $jail apt -y install terraform
+    sleep 3
+}
+
+opentofu() {
+    clear
+    echo "OpenTofu"
+    sudo chroot $jail snap install opentofu --classic
     sleep 3
 }
 
@@ -537,7 +559,7 @@ no() {
     sleep 3
 }
 
-hashicorp
+iac
 clear
 
 #POSTINST
@@ -550,28 +572,20 @@ sudo echo '#!/bin/bash
 #CHOSE IDE
 clear
 ide() {
-	echo "Chose your IDE: ATOM, INTELLIJ, VSCODE or CODIUM?"
+	echo "Chose your IDE: INTELLIJ, VSCODE or CODIUM?"
 	sleep 3
-	echo "Type atom, intellij, vscode, codium or no"
+	echo "Type intellij, vscode, codium or no"
 	echo -n "What option is desired? "
 	read ide
 
 	case $ide in
-		atom) atom ;;
 		intellij) intellij ;;
 		vscode) vscode ;;
 		codium) codium ;;
 		no) no ;;
-		*) clear ; echo "Type [atom], [intellij], [vscode], [codium] or [no] to end this process!" ; sleep 3 ; clear ; ide ;;
+		*) clear ; echo "Type [intellij], [vscode], [codium] or [no] to end this process!" ; sleep 3 ; clear ; ide ;;
 	esac
 
-}
-
-atom() {
-	clear
-	echo "#ATOM"
-	sudo snap install atom --classic
-	sleep 3
 }
 
 intellij() {
@@ -626,8 +640,6 @@ yes() {
     sudo snap install kubectl --classic
     echo "HELM"
     sudo snap install helm --classic
-    echo "LENS"
-    sudo snap install kontena-lens --classic
     echo "KUBENAV"
     cd /tmp
     wget -c https://github.com/kubenav/kubenav/releases/latest/download/kubenav-linux-amd64.zip
@@ -661,7 +673,7 @@ sudo chmod 666 $jail/etc/bash.bashrc
 sudo echo '
 #powerline
 if [ -f `which powerline-daemon` ]; then
-  powerline-daemon --quiet --replace
+  powerline-daemon --quiet
   POWERLINE_BASH_CONTINUATION=1
   POWERLINE_BASH_SELECT=1
   . /usr/share/powerline/bindings/bash/powerline.sh
