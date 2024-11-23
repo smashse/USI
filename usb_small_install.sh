@@ -116,7 +116,7 @@ focal() {
     export codename_release="Focal Fossa"
     export version_release="20.04.5"
     export lsb_release="focal"
-    export cdimage_release="http://cdimage.ubuntu.com/ubuntu-base/releases/focal/release/ubuntu-base-20.04.5-base-amd64.tar.gz"
+    export cdimage_release="http://cdimage.ubuntu.com/ubuntu-base/releases/focal/release/ubuntu-base-$version_release-base-amd64.tar.gz"
     sleep 3
 }
 
@@ -124,9 +124,9 @@ jammy() {
     clear
     echo "#Install Jammy Jellyfish!"
     export codename_release="Jammy Jellyfish"
-    export version_release="22.04.4"
+    export version_release="22.04.5"
     export lsb_release="jammy"
-    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/jammy/release/ubuntu-base-22.04.5-base-amd64.tar.gz"
+    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/jammy/release/ubuntu-base-$version_release-base-amd64.tar.gz"
     sleep 3
 }
 
@@ -134,9 +134,9 @@ noble() {
     clear
     echo "#Install Noble Numbat!"
     export codename_release="Noble Numbat"
-    export version_release="24.04"
+    export version_release="24.04.1"
     export lsb_release="noble"
-    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/noble/release/ubuntu-base-24.04.1-base-amd64.tar.gz"
+    export cdimage_release="https://cdimage.ubuntu.com/ubuntu-base/releases/noble/release/ubuntu-base-$version_release-base-amd64.tar.gz"
     sleep 3
 }
 
