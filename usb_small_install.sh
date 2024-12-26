@@ -685,8 +685,8 @@ sudo touch $jail/usr/local/sbin/updateme
 sudo chmod 777 $jail/usr/local/sbin/updateme
 sudo echo '#!/bin/bash
 sudo apt update --fix-missing
-sudo apt -y dist-upgrade --download-only
-sudo apt -y dist-upgrade
+sudo apt -y full-upgrade --download-only
+sudo apt -y full-upgrade
 sudo apt -y autoremove
 sudo apt -y clean
 sudo snap set system refresh.retain=2
